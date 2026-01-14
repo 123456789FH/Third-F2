@@ -1,0 +1,1185 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>لعبة الاختبار التفاعلية | 30 سؤال</title>
+  <style>
+    :root{
+      --bg1:#0b1220;
+      --bg2:#0a2a43;
+      --muted:#a8bdd2;
+      --text:#eef6ff;
+      --accent:#38bdf8;
+      --good:#22c55e;
+      --bad:#ef4444;
+      --warn:#f59e0b;
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 20px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Tajawal","Segoe UI",system-ui,-apple-system,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 15% 10%, rgba(56,189,248,.25), transparent 55%),
+        radial-gradient(900px 600px at 85% 25%, rgba(34,197,94,.18), transparent 55%),
+        radial-gradient(900px 700px at 40% 95%, rgba(245,158,11,.15), transparent 60%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+    }
+    .app{width:min(1080px,100%);display:grid;gap:14px}
+
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .logoWrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .logoImg{
+      width:54px;height:54px;border-radius:16px;overflow:hidden;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow);
+      display:grid;place-items:center;
+    }
+    .logoImg img{width:100%;height:100%;object-fit:cover;display:block}
+    .brand h1{margin:0;font-size:18px;line-height:1.2}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+
+    .meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      padding:10px 12px;border-radius:999px;
+      font-size:12px;color:var(--muted);
+      display:flex;gap:8px;align-items:center;user-select:none;
+    }
+    .pill b{color:var(--text);font-weight:900}
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card-inner{padding:18px}
+
+    .row{display:grid;grid-template-columns: 1.25fr .75fr;gap:14px}
+    @media (max-width: 900px){.row{grid-template-columns:1fr}}
+
+    .info{display:flex;align-items:flex-start;gap:14px}
+    .icon{
+      width:54px;height:54px;border-radius:18px;
+      background: rgba(56,189,248,.12);
+      border:1px solid rgba(56,189,248,.25);
+      display:grid;place-items:center;flex:0 0 auto;
+    }
+
+    .kicker{
+      color:var(--accent);font-size:12px;letter-spacing:.2px;
+      margin-bottom:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+    }
+    .tag{
+      font-size:11px;color:rgba(255,255,255,.9);
+      background: rgba(56,189,248,.12);
+      border: 1px solid rgba(56,189,248,.24);
+      padding:4px 10px;border-radius:999px;user-select:none;
+    }
+
+    .title{font-size:20px;margin:0 0 8px;line-height:1.6}
+    .sub{margin:0;color:var(--muted);font-size:13px;line-height:1.85}
+
+    .progress{
+      height:10px;background: rgba(255,255,255,.07);
+      border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.10);
+      margin-top:10px;
+    }
+    .bar{
+      height:100%;width:0%;
+      background: linear-gradient(90deg, var(--accent), rgba(34,197,94,.85));
+      border-radius:999px;transition: width .35s ease;
+    }
+
+    .choices{display:grid;gap:10px;margin-top:14px}
+
+    .btn{
+      width:100%;
+      border:none;border-radius:16px;
+      padding:12px 14px;text-align:right;
+      font-size:15px;cursor:pointer;
+      color:var(--text);
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.08)}
+    .btn:active{transform: translateY(0px)}
+    .btn[disabled]{cursor:not-allowed;opacity:.88}
+
+    .btn .opt{display:flex;align-items:center;gap:10px}
+    .chip{
+      width:28px;height:28px;border-radius:10px;
+      display:grid;place-items:center;
+      background: rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
+      font-weight:1000;color: rgba(255,255,255,.92);
+      flex:0 0 auto;
+    }
+    .rightmark{
+      width:26px;height:26px;border-radius:10px;
+      display:grid;place-items:center;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      opacity:.9;
+    }
+
+    .state-good{border-color: rgba(34,197,94,.55)!important;background: rgba(34,197,94,.18)!important;}
+    .state-bad{border-color: rgba(239,68,68,.55)!important;background: rgba(239,68,68,.16)!important;}
+
+    .feedback{
+      margin-top:12px;padding:12px 14px;border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      display:none;line-height:1.9;font-size:13px;color:var(--muted);
+    }
+    .feedback strong{color:var(--text)}
+
+    .actions{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+    .ghost{background: transparent;border:1px dashed rgba(255,255,255,.22);color: rgba(255,255,255,.86);}
+    .primary{
+      background: linear-gradient(135deg, rgba(56,189,248,.95), rgba(34,197,94,.85));
+      border: none;color: #05202d;font-weight:1000;
+    }
+    .small{font-size:12px;color:var(--muted)}
+
+    .panel{
+      padding:16px;border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);height:100%;
+    }
+    .panel h3{margin:0 0 10px;font-size:15px}
+    .stats{display:grid;grid-template-columns: repeat(3, 1fr);gap:10px}
+    @media (max-width: 520px){.stats{grid-template-columns:1fr}}
+    .stat{
+      border-radius:16px;background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
+      padding:12px;min-height:70px;
+    }
+    .stat .n{font-size:20px;font-weight:1000;margin:2px 0 2px}
+    .stat .t{font-size:12px;color:var(--muted)}
+
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color:var(--muted);font-size:12px;margin-top:10px;user-select:none;
+    }
+
+    .screen{display:none}
+    .screen.active{display:block}
+    .center{text-align:center}
+    .big{font-size:26px;margin:8px 0 6px}
+    .cta{margin-top:12px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .pulse{animation: pulse .55s ease}
+    @keyframes pulse{0%{transform:scale(1)}35%{transform:scale(1.02)}100%{transform:scale(1)}}
+
+    .footer{
+      margin-top:10px;text-align:center;
+      color:rgba(255,255,255,.62);
+      font-size:12px;line-height:1.8;
+    }
+    .footer b{color:rgba(255,255,255,.86)}
+
+    /* قوائم منسدلة بشكل زر */
+    select.btn{
+      -webkit-appearance:none;appearance:none;
+      outline:none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <div class="topbar">
+      <div class="brand">
+        <div class="logoWrap">
+          <div class="logoImg" title="الشعار">
+            <img alt="الشعار" src="logo.jpg">
+          </div>
+          <div>
+            <h1>لعبة الاختبار التفاعلية</h1>
+            <p>٣٠ سؤالًا — مستويات متعددة + شرح خطوة بخطوة</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div class="pill">التقدّم: <b id="metaProgress">٠/٣٠</b></div>
+        <div class="pill">الدرجة: <b id="metaScore">٠</b></div>
+        <div class="pill">المستوى: <b id="metaDiff">—</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-inner">
+
+        <!-- START SCREEN -->
+        <section id="screenStart" class="screen active center">
+          <div class="icon" style="margin:0 auto 10px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3v18" stroke="rgba(56,189,248,.9)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M3 12h18" stroke="rgba(34,197,94,.9)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M7 7l10 10" stroke="rgba(255,255,255,.4)" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <div class="big">جاهزة للعب؟ 🎮</div>
+          <p class="sub" style="max-width:760px;margin:0 auto;">
+            اختاري الوحدة ثم الدرس لتظهر أسئلة تفاعلية خاصة بذلك الدرس.
+            عند الإجابة الصحيحة يظهر تأثير أخضر + صوت تشجيعي، ومع كل سؤال شرح حل خطوة بخطوة.
+          </p>
+
+          <!-- ===== Dropdowns ===== -->
+          <div style="max-width:760px;margin:14px auto 0; text-align:right;">
+            <div class="badge" style="justify-content:center;margin-bottom:10px;">
+              🎯 اختاري الوحدة ثم الدرس
+            </div>
+
+            <div style="display:grid;gap:10px;grid-template-columns:1fr 1fr;">
+              <div style="text-align:right">
+                <div class="small" style="margin-bottom:6px;">الوحدة</div>
+                <select id="unitSelect" class="btn">
+                  <option value="">— اختاري الوحدة —</option>
+                </select>
+              </div>
+
+              <div style="text-align:right">
+                <div class="small" style="margin-bottom:6px;">الدرس</div>
+                <select id="lessonSelect" class="btn" disabled>
+                  <option value="">— اختاري الدرس —</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="small" id="filterNote" style="margin-top:8px;text-align:center;">
+              إذا لم تختاري درسًا سيتم تشغيل الاختبار الشامل.
+            </div>
+          </div>
+
+          <div class="cta">
+            <button class="btn primary" id="btnStart" style="max-width:340px;justify-content:center;">
+              ابدئي الاختبار 🚀
+            </button>
+            <button class="btn ghost" id="btnToggleSound" style="max-width:340px;justify-content:center;">
+              الصوت: <span id="soundState">مفعل</span> 🔊
+            </button>
+          </div>
+
+          <div class="badge">💡 تلميح: يمكنك تغيير الوحدة/الدرس ثم البدء من جديد ✨</div>
+        </section>
+
+        <!-- QUIZ SCREEN -->
+        <section id="screenQuiz" class="screen">
+          <div class="row">
+            <div>
+              <div class="info">
+                <div class="icon" id="qIcon" aria-hidden="true"></div>
+                <div style="width:100%">
+                  <div class="kicker">
+                    <span id="qUnit" class="tag">—</span>
+                    <span id="qLesson" class="tag">—</span>
+                    <span id="qDifficulty" class="tag">—</span>
+                  </div>
+                  <h2 class="title" id="qText">—</h2>
+                  <p class="sub" id="qHint">—</p>
+                  <div class="progress" aria-label="progress bar">
+                    <div class="bar" id="bar"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="choices" id="choices"></div>
+
+              <div class="feedback" id="feedback"></div>
+
+              <div class="actions">
+                <span class="small">اختاري إجابة واحدة.</span>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                  <button class="btn ghost" id="btnSkip" style="min-width:180px;justify-content:center;">
+                    تخطي السؤال ⏭️
+                  </button>
+                  <button class="btn primary" id="btnNext" style="min-width:180px;justify-content:center;" disabled>
+                    التالي ➜
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <aside class="panel">
+              <h3>لوحة النتائج</h3>
+              <div class="stats">
+                <div class="stat">
+                  <div class="t">صحيح ✅</div>
+                  <div class="n" id="stCorrect">٠</div>
+                </div>
+                <div class="stat">
+                  <div class="t">خطأ ❌</div>
+                  <div class="n" id="stWrong">٠</div>
+                </div>
+                <div class="stat">
+                  <div class="t">متبقي ⏳</div>
+                  <div class="n" id="stLeft">٣٠</div>
+                </div>
+              </div>
+              <div class="badge" id="topicBadge">المجال الحالي: —</div>
+              <div class="badge" id="filterBadge">الفلتر: اختبار شامل</div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- RESULT SCREEN -->
+        <section id="screenResult" class="screen center">
+          <div class="icon" style="margin:0 auto 10px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M7 14l3 3 7-8" stroke="rgba(34,197,94,.95)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10Z" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>
+            </svg>
+          </div>
+          <div class="big">أحسنتِ! 🎉</div>
+          <p class="sub" id="finalText" style="max-width:760px;margin:0 auto;"></p>
+
+          <div class="cta">
+            <button class="btn primary" id="btnRestart" style="max-width:340px;justify-content:center;">
+              عودة للبداية 🔁
+            </button>
+            <button class="btn ghost" id="btnReview" style="max-width:340px;justify-content:center;">
+              عرض ملخص الأخطاء 📌
+            </button>
+          </div>
+
+          <div class="card" style="margin-top:14px;">
+            <div class="card-inner" style="text-align:right">
+              <h3 style="margin:0 0 10px;">ملخص الأخطاء</h3>
+              <div id="reviewBox" class="sub" style="display:none"></div>
+              <div class="sub" style="margin-top:8px;color:var(--muted)">
+                * يعرض الأسئلة التي كانت إجابتها غير صحيحة أو تم تخطيها.
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <div class="footer">
+      <b>أ/ فاطمة هزازي</b> , ملتقى معلمي ومعلمات الرياضيات , التعليم التفاعلي
+    </div>
+  </div>
+
+<script>
+/* =========================
+   أرقام عربية ٠١٢٣٤٥٦٧٨٩
+   ========================= */
+const AR_DIGITS = ["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
+function toArabicDigits(input){ return String(input).replace(/\d/g, d => AR_DIGITS[Number(d)]); }
+function fmtText(text){ return toArabicDigits(text); }
+
+/* =========================
+   أسئلة (٣٠) منظمة حسب الوحدة والدرس
+   ملاحظة: كل سؤال فيه unit + lesson
+   ========================= */
+const QUESTIONS = [
+  // ===== القسمة (١) =====
+  { unit:"القسمة (١)", lesson:"مفهوم القسمة", diff:"سهل", icon:"divide",
+    q:"ما الرمز المستخدم لعملية القسمة؟",
+    hint:"رمز القسمة يظهر في أمثلة الدرس.",
+    choices:["÷","×","+","−"], answer:0,
+    explain:"رمز القسمة هو ÷.",
+    steps:["نقرأ السؤال: ما رمز القسمة؟","نقارن رموز العمليات: + جمع، − طرح، × ضرب، ÷ قسمة.","إذن الرمز الصحيح هو ÷."]},
+
+  { unit:"القسمة (١)", lesson:"مفهوم القسمة", diff:"سهل", icon:"groups",
+    q:"القسمة تساعدنا على…",
+    hint:"فكري في معنى (توزيع بالتساوي).",
+    choices:["توزيع عدد من الأشياء بالتساوي","جمع أعداد كبيرة بسرعة","قياس الطول بالمتر","رسم أشكال هندسية"], answer:0,
+    explain:"القسمة تُستخدم لتوزيع أو تقسيم الأشياء بالتساوي.",
+    steps:["نحدد معنى القسمة: توزيع بالتساوي.","نختار الخيار الذي يطابق المعنى.","إذن الإجابة: توزيع الأشياء بالتساوي."]},
+
+  { unit:"القسمة (١)", lesson:"علاقة القسمة بالطرح", diff:"متوسط", icon:"minus",
+    q:"أي طريقة مرتبطة بالقسمة مع الطرح؟",
+    hint:"عنوان الدرس يذكر علاقة القسمة بالطرح.",
+    choices:["الطرح المتكرر","الجمع المتكرر","القياس فقط","الرسم فقط"], answer:0,
+    explain:"القسمة يمكن تمثيلها بالطرح المتكرر.",
+    steps:["نفهم: القسمة = كم مرة نطرح نفس العدد.","نطرح مقدارًا ثابتًا مرارًا حتى نصل للصفر.","إذن الطريقة: الطرح المتكرر."]},
+
+  { unit:"القسمة (١)", lesson:"علاقة القسمة بالضرب", diff:"متوسط", icon:"times",
+    q:"كيف تساعدنا العلاقة بين الضرب والقسمة؟",
+    hint:"إذا عرفتِ جملة ضرب، تستطيعين إيجاد القسمة.",
+    choices:["إيجاد ناتج القسمة باستخدام حقيقة ضرب مرتبطة","تحويل اللتر إلى متر","حساب المحيط فقط","قياس المساحة فقط"], answer:0,
+    explain:"نستخدم حقائق الضرب المترابطة لإيجاد ناتج القسمة.",
+    steps:["إذا كان a × b = c، فالقسمة: c ÷ a = b.","نستفيد من حقائق الضرب بدل الحساب من البداية.","إذن الإجابة الصحيحة: استخدام حقيقة ضرب مرتبطة."]},
+
+  { unit:"القسمة (١)", lesson:"القسمة على ٢", diff:"سهل", icon:"two",
+    q:"ناتج ٨ ÷ ٢ يساوي…",
+    hint:"قسّمي ٨ إلى مجموعتين متساويتين.",
+    choices:["٢","٤","٦","٨"], answer:1,
+    explain:"٨ ÷ ٢ = ٤.",
+    steps:["المقسوم ٨ والمقسوم عليه ٢.","نقسم ٨ إلى مجموعتين.","في كل مجموعة ٤، إذن الناتج ٤."]},
+
+  { unit:"القسمة (١)", lesson:"القسمة على ٥", diff:"متوسط", icon:"five",
+    q:"ناتج ٣٠ ÷ ٥ يساوي…",
+    hint:"استخدمي حقيقة ضرب: ٥ × ؟ = ٣٠.",
+    choices:["٥","٦","١٠","٣٠"], answer:1,
+    explain:"٣٠ ÷ ٥ = ٦.",
+    steps:["نبحث عن عدد إذا ضربناه في ٥ يعطينا ٣٠.","٥ × ٦ = ٣٠.","إذن ٣٠ ÷ ٥ = ٦."]},
+
+  { unit:"القسمة (١)", lesson:"القسمة على ١٠", diff:"سهل", icon:"ten",
+    q:"ناتج ٥٠ ÷ ١٠ يساوي…",
+    hint:"كم عشرة في ٥٠؟",
+    choices:["٢","٥","١٠","٥٠"], answer:1,
+    explain:"٥٠ ÷ ١٠ = ٥.",
+    steps:["نحدد المقسوم ٥٠ والمقسوم عليه ١٠.","نسأل: ١٠ × كم = ٥٠؟","١٠ × ٥ = ٥٠ إذن الناتج ٥."]},
+
+  { unit:"القسمة (١)", lesson:"القسمة مع الواحد", diff:"متوسط", icon:"one",
+    q:"أي جملة صحيحة؟",
+    hint:"قسمة أي عدد على ١ تساوي العدد نفسه.",
+    choices:["٤ ÷ ١ = ٤","٤ ÷ ١ = ١","٤ ÷ ١ = ٠","٤ ÷ ١ = ٥"], answer:0,
+    explain:"٤ ÷ ١ = ٤ لأن القسمة على ١ لا تغيّر العدد.",
+    steps:["نتذكر القاعدة: n ÷ ١ = n.","نطبق على ٤.","إذن الجملة الصحيحة: ٤ ÷ ١ = ٤."]},
+
+  { unit:"القسمة (١)", lesson:"القسمة مع الصفر", diff:"متوسط", icon:"zero",
+    q:"أي جملة صحيحة؟",
+    hint:"٠ ÷ عدد (غير صفر) = ٠.",
+    choices:["٠ ÷ ٤ = ٠","٠ ÷ ٤ = ٤","٠ ÷ ٤ = ١","٠ ÷ ٤ لا يمكن"], answer:0,
+    explain:"٠ ÷ ٤ = ٠.",
+    steps:["لا يوجد شيء ليتوزع عندما يكون المقسوم ٠.","إذن الناتج يبقى ٠.","الاختيار الصحيح: ٠ ÷ ٤ = ٠."]},
+
+  { unit:"القسمة (١)", lesson:"مصطلحات القسمة", diff:"صعب", icon:"vocab",
+    q:"في ٢١ ÷ ٣ = ٧، ما هو (المقسوم عليه)؟",
+    hint:"المقسوم عليه هو العدد الذي نقسم عليه.",
+    choices:["٢١","٣","٧","÷"], answer:1,
+    explain:"المقسوم عليه هو ٣.",
+    steps:["نحدد الجملة: ٢١ ÷ ٣ = ٧.","المقسوم = ٢١، المقسوم عليه = ٣، الناتج = ٧.","إذن المقسوم عليه هو ٣."]},
+
+  // ===== القسمة (٢) =====
+  { unit:"القسمة (٢)", lesson:"تمثيل القسمة بنموذج", diff:"متوسط", icon:"model",
+    q:"ناتج ٢٠ ÷ ٥ يساوي…",
+    hint:"كم خمسة في ٢٠؟",
+    choices:["٣","٤","٥","٦"], answer:1,
+    explain:"٢٠ ÷ ٥ = ٤.",
+    steps:["نبحث عن عدد × ٥ = ٢٠.","٥ × ٤ = ٢٠.","إذن الناتج ٤."]},
+
+  { unit:"القسمة (٢)", lesson:"القسمة على ٣", diff:"سهل", icon:"three",
+    q:"ناتج ٢٤ ÷ ٣ يساوي…",
+    hint:"٣ × ؟ = ٢٤.",
+    choices:["٦","٧","٨","٩"], answer:2,
+    explain:"٢٤ ÷ ٣ = ٨.",
+    steps:["نبحث عن عدد إذا ضربناه في ٣ يعطينا ٢٤.","٣ × ٨ = ٢٤.","إذن الناتج ٨."]},
+
+  { unit:"القسمة (٢)", lesson:"القسمة على ٤", diff:"سهل", icon:"four",
+    q:"ناتج ٢٨ ÷ ٤ يساوي…",
+    hint:"٤ × ؟ = ٢٨.",
+    choices:["٦","٧","٨","٩"], answer:1,
+    explain:"٢٨ ÷ ٤ = ٧.",
+    steps:["نبحث عن عدد × ٤ = ٢٨.","٤ × ٧ = ٢٨.","إذن الناتج ٧."]},
+
+  { unit:"القسمة (٢)", lesson:"أعمل جدولًا", diff:"تفكير", icon:"table",
+    q:"عند استخدام خطة «أعمل جدولًا»، ما الهدف الأساسي؟",
+    hint:"الجدول ينظّم المعطيات ويساعد على تتبع النمط.",
+    choices:["تنظيم المعطيات وملاحظة النمط","تغيير وحدة القياس","رسم مثلث فقط","حفظ جدول الضرب فقط"], answer:0,
+    explain:"الجدول يساعد على تنظيم المعلومات ورؤية النمط للوصول للحل.",
+    steps:["نقرأ: أعمل جدولًا.","الهدف: ترتيب المعلومات.","الجدول يساعد على ملاحظة نمط والوصول للحل."]},
+
+  { unit:"القسمة (٢)", lesson:"القسمة على ٦", diff:"متوسط", icon:"six",
+    q:"ناتج ٢٤ ÷ ٦ يساوي…",
+    hint:"٦ × ؟ = ٢٤.",
+    choices:["٢","٣","٤","٦"], answer:2,
+    explain:"٢٤ ÷ ٦ = ٤.",
+    steps:["نبحث عن عدد × ٦ = ٢٤.","٦ × ٤ = ٢٤.","إذن الناتج ٤."]},
+
+  { unit:"القسمة (٢)", lesson:"القسمة على ٧", diff:"متوسط", icon:"seven",
+    q:"ناتج ٢٨ ÷ ٧ يساوي…",
+    hint:"٧ × ؟ = ٢٨.",
+    choices:["٢","٣","٤","٥"], answer:2,
+    explain:"٢٨ ÷ ٧ = ٤.",
+    steps:["نبحث عن عدد × ٧ = ٢٨.","٧ × ٤ = ٢٨.","إذن الناتج ٤."]},
+
+  { unit:"القسمة (٢)", lesson:"القسمة على ٨", diff:"متوسط", icon:"eight",
+    q:"ناتج ٣٢ ÷ ٨ يساوي…",
+    hint:"٨ × ؟ = ٣٢.",
+    choices:["٢","٣","٤","٥"], answer:2,
+    explain:"٣٢ ÷ ٨ = ٤.",
+    steps:["نبحث عن عدد × ٨ = ٣٢.","٨ × ٤ = ٣٢.","إذن الناتج ٤."]},
+
+  { unit:"القسمة (٢)", lesson:"القسمة على ٩", diff:"متوسط", icon:"nine",
+    q:"ناتج ٢٧ ÷ ٩ يساوي…",
+    hint:"٩ × ؟ = ٢٧.",
+    choices:["٢","٣","٤","٦"], answer:1,
+    explain:"٢٧ ÷ ٩ = ٣.",
+    steps:["نبحث عن عدد × ٩ = ٢٧.","٩ × ٣ = ٢٧.","إذن الناتج ٣."]},
+
+  { unit:"القسمة (٢)", lesson:"اختيار العملية", diff:"صعب", icon:"choose",
+    q:"أي موقف يناسبه استخدام القسمة؟",
+    hint:"القسمة = توزيع بالتساوي.",
+    choices:["توزيع ٢٤ لعبة بالتساوي على ٣ طلاب","جمع عدد صفحات كتابين","قياس طول طاولة بالمتر","رسم شكل متماثل"], answer:0,
+    explain:"التوزيع بالتساوي يدل على القسمة.",
+    steps:["نلاحظ كلمة: بالتساوي.","هذا يعني تقسيم إلى مجموعات متساوية.","إذن نستخدم القسمة."]},
+
+  { unit:"القسمة (٢)", lesson:"التحقق بعكس العملية", diff:"تفكير", icon:"strategy",
+    q:"إذا كان ٣٦ ÷ ٦ = ٦، كيف أتحقق من صحة الحل؟",
+    hint:"استخدمي العملية العكسية للقسمة.",
+    choices:["أضرب ٦ × ٦ لأحصل على ٣٦","أجمع ٦ + ٦ فقط","أطرح ٣٦ − ٦ مرة واحدة","أقيسها بالسنتمتر"], answer:0,
+    explain:"للتحقق من القسمة نستخدم الضرب (عملية عكسية).",
+    steps:["العملية العكسية للقسمة هي الضرب.","نضرب الناتج × المقسوم عليه.","٦ × ٦ = ٣٦ إذن الحل صحيح."]},
+
+  // ===== القياس =====
+  { unit:"القياس", lesson:"الملمتر والسنتمتر", diff:"سهل", icon:"ruler",
+    q:"أي وحدة أصغر لقياس الأطوال الصغيرة جدًا؟",
+    hint:"قارن بين ملم وسم.",
+    choices:["الملمتر (ملم)","السنتمتر (سم)","المتر (م)","الكيلومتر (كلم)"], answer:0,
+    explain:"الملمتر وحدة أصغر لقياس أطوال صغيرة جدًا.",
+    steps:["نقارن الوحدات: ملم، سم، م، كلم.","الأصغر هي المليمتر.","إذن الإجابة: المليمتر."]},
+
+  { unit:"القياس", lesson:"الملمتر والسنتمتر", diff:"متوسط", icon:"convert",
+    q:"كم مليمتر في ١ سنتمتر؟",
+    hint:"علاقة التحويل بين سم وملم.",
+    choices:["١","٥","١٠","١٠٠"], answer:2,
+    explain:"١ سم = ١٠ ملم.",
+    steps:["نسترجع العلاقة: كل سنتمتر يحتوي ١٠ مليمترات.","إذن ١ سم = ١٠ ملم."]},
+
+  { unit:"القياس", lesson:"وحدات الطول المترية", diff:"متوسط", icon:"meters",
+    q:"الوحدة الأنسب لقياس مسافة بين مدينتين هي…",
+    hint:"للمسافات الكبيرة نستخدم وحدة كبيرة.",
+    choices:["ملم","سم","م","كلم"], answer:3,
+    explain:"المسافات بين المدن تقاس بالكيلومتر.",
+    steps:["المسافة بين مدينتين كبيرة.","الوحدة المناسبة: كيلومتر.","إذن الإجابة: كلم."]},
+
+  { unit:"القياس", lesson:"وحدات الطول المترية", diff:"سهل", icon:"meters",
+    q:"الوحدة الأنسب لقياس طول كتاب هي…",
+    hint:"طول الكتاب عادة يقاس بوحدة متوسطة.",
+    choices:["ملم","سم","كلم","طن"], answer:1,
+    explain:"طول الكتاب غالبًا يقاس بالسنتمتر.",
+    steps:["الكتاب ليس صغيرًا جدًا كالمليمتر.","ولا كبيرًا كالكيلومتر.","إذن الأنسب: سم."]},
+
+  { unit:"القياس", lesson:"المحيط", diff:"سهل", icon:"perimeter",
+    q:"ما تعريف «المحيط»؟",
+    hint:"فكري في طول الإطار الخارجي للشكل.",
+    choices:["مجموع أطوال أضلاع الشكل","عدد المربعات داخل الشكل","قياس السعة باللتر","قياس الكتلة بالجرام"], answer:0,
+    explain:"المحيط هو مجموع أطوال الأضلاع.",
+    steps:["المحيط يتعلق بالحدود الخارجية.","نحسبه بجمع أطوال الأضلاع.","إذن التعريف: مجموع أطوال الأضلاع."]},
+
+  { unit:"القياس", lesson:"المحيط", diff:"متوسط", icon:"perimeter",
+    q:"مستطيل طوله ٥ وحدات وعرضه ٤ وحدات. محيطه = ؟",
+    hint:"اجمع أطوال الأضلاع الأربعة.",
+    choices:["٩","١٨","٢٠","٤٠"], answer:1,
+    explain:"المحيط = ٥ + ٤ + ٥ + ٤ = ١٨.",
+    steps:["المحيط = مجموع الأضلاع.","نجمع: ٥ + ٤ + ٥ + ٤.","الناتج ١٨."]},
+
+  { unit:"القياس", lesson:"قياس المساحة", diff:"سهل", icon:"area",
+    q:"المساحة على شبكة مربعات تعتمد على…",
+    hint:"عدّ المربعات التي تغطي الشكل.",
+    choices:["عدد الوحدات المربعة","عدد الأضلاع فقط","عدد اللترات","عدد الكيلومترات"], answer:0,
+    explain:"المساحة = عدد الوحدات المربعة التي تغطي الشكل.",
+    steps:["المساحة تقيس مقدار السطح داخل الشكل.","على الشبكة نعد المربعات.","إذن الإجابة: عدد الوحدات المربعة."]},
+
+  { unit:"القياس", lesson:"قياس المساحة", diff:"متوسط", icon:"area",
+    q:"إذا كان لديك ٨ أنصاف مربعات، فهي تساوي…",
+    hint:"كل مربع كامل = نصفين.",
+    choices:["٢ مربعات كاملة","٤ مربعات كاملة","٦ مربعات كاملة","٨ مربعات كاملة"], answer:1,
+    explain:"٨ أنصاف = ٤ مربعات كاملة.",
+    steps:["كل ٢ نصف = ١ مربع كامل.","إذن ٨ ÷ ٢ = ٤.","المساحة = ٤ مربعات كاملة."]},
+
+  { unit:"القياس", lesson:"وحدات السعة المترية", diff:"سهل", icon:"capacity",
+    q:"أي عبارة صحيحة؟",
+    hint:"علاقة اللتر والمليلتر.",
+    choices:["١ ل = ١٠٠٠ مل","١ ل = ١٠٠ مل","١ ل = ١٠ مل","١ ل = ١٠٠٠٠ مل"], answer:0,
+    explain:"١ لتر = ١٠٠٠ مليلتر.",
+    steps:["اللتر أكبر من المليلتر.","التحويل الصحيح: ١ ل = ١٠٠٠ مل.","إذن العبارة الصحيحة هي ١ ل = ١٠٠٠ مل."]},
+
+  { unit:"القياس", lesson:"وحدات السعة المترية", diff:"صعب", icon:"capacity",
+    q:"إذا كانت زجاجة تحتوي ٢ ل، فكم تساوي بالمليلتر؟",
+    hint:"حوّلي: ١ ل = ١٠٠٠ مل.",
+    choices:["٢٠٠","٢٠٠٠","٢٠٠٠٠","٢٠"], answer:1,
+    explain:"٢ ل = ٢ × ١٠٠٠ = ٢٠٠٠ مل.",
+    steps:["نعرف: ١ ل = ١٠٠٠ مل.","نضرب ٢ × ١٠٠٠.","الناتج ٢٠٠٠ مل."]},
+
+  // ===== 10 أسئلة إضافية (لإكمال 30) مرتبطة بنفس الوحدات والدروس =====
+  { unit:"القسمة (١)", lesson:"مصطلحات القسمة", diff:"صعب", icon:"vocab",
+    q:"في ٢١ ÷ ٣ = ٧، ما هو «ناتج القسمة»؟",
+    hint:"ناتج القسمة هو العدد بعد علامة =.",
+    choices:["٢١","٣","٧","÷"], answer:2,
+    explain:"ناتج القسمة هو ٧.",
+    steps:["ننظر إلى الجملة: ٢١ ÷ ٣ = ٧.","الناتج هو ما بعد علامة =.","إذن ناتج القسمة ٧."]},
+
+  { unit:"القسمة (١)", lesson:"القسمة على الصفر", diff:"تفكير", icon:"ban",
+    q:"أي عبارة صحيحة حول القسمة على الصفر؟",
+    hint:"قاعدة مهمة.",
+    choices:["لا يمكن القسمة على الصفر","أي عدد ÷ ٠ = العدد نفسه","٠ ÷ ٠ = ٠ دائمًا","القسمة على الصفر تعطي ١"], answer:0,
+    explain:"لا يمكن القسمة على الصفر.",
+    steps:["القسمة تعني توزيع على مجموعات.","إذا كان المقسوم عليه ٠ فلا معنى للتوزيع.","إذن لا يمكن القسمة على الصفر."]},
+
+  { unit:"القسمة (٢)", lesson:"تمثيل القسمة بنموذج", diff:"تفكير", icon:"model",
+    q:"إذا وزعنا ١٨ قلمًا على ٦ طلاب بالتساوي، فكم قلمًا لكل طالب؟",
+    hint:"توزيع بالتساوي يعني قسمة.",
+    choices:["٢","٣","٤","٦"], answer:1,
+    explain:"١٨ ÷ ٦ = ٣.",
+    steps:["نحدد العملية: قسمة.","نحسب ١٨ ÷ ٦.","الناتج ٣ أقلام لكل طالب."]},
+
+  { unit:"القسمة (٢)", lesson:"القسمة على ٦", diff:"سهل", icon:"six",
+    q:"ناتج ١٨ ÷ ٦ يساوي…",
+    hint:"٦ × ؟ = ١٨.",
+    choices:["٢","٣","٤","٦"], answer:1,
+    explain:"١٨ ÷ ٦ = ٣.",
+    steps:["نبحث عن عدد × ٦ = ١٨.","٦ × ٣ = ١٨.","إذن الناتج ٣."]},
+
+  { unit:"القسمة (٢)", lesson:"القسمة على ٨", diff:"سهل", icon:"eight",
+    q:"ناتج ٤٠ ÷ ٨ يساوي…",
+    hint:"٨ × ؟ = ٤٠.",
+    choices:["٣","٤","٥","٦"], answer:2,
+    explain:"٤٠ ÷ ٨ = ٥.",
+    steps:["نبحث عن عدد × ٨ = ٤٠.","٨ × ٥ = ٤٠.","إذن الناتج ٥."]},
+
+  { unit:"القياس", lesson:"قياس المساحة", diff:"صعب", icon:"area",
+    q:"شكل يغطي ٦ مربعات كاملة و٢ نصف مربع. كم مساحته بوحدة مربعة؟",
+    hint:"٢ نصف = ١ مربع كامل.",
+    choices:["٦","٧","٨","٧٫٥"], answer:1,
+    explain:"٢ نصف مربع = ١ مربع كامل، إذن المساحة = ٦ + ١ = ٧.",
+    steps:["نحوّل الأنصاف: ٢ نصف = ١ كامل.","نجمع: ٦ + ١.","الناتج ٧ وحدات مربعة."]},
+
+  { unit:"القياس", lesson:"المحيط", diff:"تفكير", icon:"perimeter",
+    q:"لماذا لا نستخدم «المساحة» بدل «المحيط» عند سؤال: كم طول الإطار الخارجي؟",
+    hint:"المحيط يتعلق بالحدود الخارجية.",
+    choices:["لأن المحيط يقيس طول الحدود الخارجية، والمساحة تقيس ما داخل الشكل","لأن المساحة أكبر دائمًا","لأن المحيط لا يستخدم وحدات","لأن المساحة تقاس باللتر"], answer:0,
+    explain:"المحيط للحدود الخارجية، والمساحة لما داخل الشكل.",
+    steps:["المطلوب: طول الإطار الخارجي.","هذا يعني حدود الشكل.","إذن نستخدم المحيط وليس المساحة."]},
+
+  { unit:"القياس", lesson:"وحدات الطول المترية", diff:"صعب", icon:"convert",
+    q:"أي تحويل صحيح؟",
+    hint:"تذكري: ١ سم = ١٠ ملم.",
+    choices:["١ سم = ١٠ ملم","١ سم = ١٠٠ ملم","١ ملم = ١٠ سم","١ م = ١٠ ملم"], answer:0,
+    explain:"التحويل الصحيح: ١ سم = ١٠ ملم.",
+    steps:["نراجع العلاقة بين سم وملم.","كل ١ سم يحتوي ١٠ ملم.","إذن التحويل الصحيح هو ١ سم = ١٠ ملم."]},
+
+  { unit:"القسمة (١)", lesson:"اختيار العملية", diff:"صعب", icon:"choose",
+    q:"أي جملة تمثل تقسيم ١٢ إلى ٣ مجموعات متساوية؟",
+    hint:"التقسيم إلى مجموعات = قسمة.",
+    choices:["١٢ ÷ ٣ = ٤","١٢ × ٣ = ٤","١٢ + ٣ = ٤","١٢ − ٣ = ٤"], answer:0,
+    explain:"تقسيم ١٢ إلى ٣ مجموعات: ١٢ ÷ ٣ = ٤.",
+    steps:["نحدد العملية: قسمة.","نحسب ١٢ ÷ ٣.","الناتج ٤."]},
+
+  { unit:"القسمة (٢)", lesson:"القسمة على ٩", diff:"سهل", icon:"nine",
+    q:"ناتج ٥٤ ÷ ٩ يساوي…",
+    hint:"٩ × ؟ = ٥٤.",
+    choices:["٤","٥","٦","٧"], answer:2,
+    explain:"٥٤ ÷ ٩ = ٦.",
+    steps:["نبحث عن عدد × ٩ = ٥٤.","٩ × ٦ = ٥٤.","إذن الناتج ٦."]},
+];
+
+/* =========================
+   أيقونات SVG بسيطة
+   ========================= */
+function iconSVG(name){
+  const common = (content)=>`<svg width="26" height="26" viewBox="0 0 24 24" fill="none">${content}</svg>`;
+  const numIcon = (n)=>`
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+      <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
+      <text x="12" y="15" text-anchor="middle" font-size="${String(n).length===2?10:12}"
+            font-weight="900" fill="rgba(56,189,248,.95)">${toArabicDigits(n)}</text>
+    </svg>`;
+  switch(name){
+    case "divide": return common(`
+      <circle cx="12" cy="6.5" r="1.6" fill="rgba(56,189,248,.9)"></circle>
+      <path d="M6 12h12" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="12" cy="17.5" r="1.6" fill="rgba(34,197,94,.9)"></circle>
+    `);
+    case "times": return common(`
+      <path d="M7 7l10 10" stroke="rgba(34,197,94,.9)" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M17 7L7 17" stroke="rgba(56,189,248,.9)" stroke-width="2.2" stroke-linecap="round"/>
+    `);
+    case "minus": return common(`<path d="M6 12h12" stroke="rgba(245,158,11,.95)" stroke-width="2.3" stroke-linecap="round"/>`);
+    case "groups": return common(`
+      <circle cx="8" cy="9" r="2" fill="rgba(56,189,248,.9)"></circle>
+      <circle cx="16" cy="9" r="2" fill="rgba(34,197,94,.9)"></circle>
+      <path d="M6 18c.8-2.2 3.2-3.5 6-3.5s5.2 1.3 6 3.5" stroke="rgba(255,255,255,.65)" stroke-width="1.7" stroke-linecap="round"/>
+    `);
+    case "two": return numIcon(2);
+    case "three": return numIcon(3);
+    case "four": return numIcon(4);
+    case "five": return numIcon(5);
+    case "six": return numIcon(6);
+    case "seven": return numIcon(7);
+    case "eight": return numIcon(8);
+    case "nine": return numIcon(9);
+    case "ten": return numIcon(10);
+    case "one": return numIcon(1);
+    case "zero": return numIcon(0);
+    case "ban": return common(`
+      <circle cx="12" cy="12" r="8" stroke="rgba(239,68,68,.95)" stroke-width="2"/>
+      <path d="M7.5 16.5l9-9" stroke="rgba(239,68,68,.95)" stroke-width="2.2" stroke-linecap="round"/>
+    `);
+    case "vocab": return common(`
+      <path d="M7 5h10" stroke="rgba(56,189,248,.9)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M7 10h6" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M7 15h8" stroke="rgba(34,197,94,.85)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M7 20h5" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linecap="round"/>
+    `);
+    case "model": return common(`
+      <rect x="4.5" y="6" width="15" height="12" rx="3" stroke="rgba(56,189,248,.85)" stroke-width="1.8"/>
+      <path d="M9 6v12" stroke="rgba(255,255,255,.5)" stroke-width="1.6"/>
+      <path d="M14 6v12" stroke="rgba(34,197,94,.6)" stroke-width="1.6"/>
+    `);
+    case "table": return common(`
+      <rect x="4" y="6" width="16" height="12" rx="2.5" stroke="rgba(245,158,11,.9)" stroke-width="1.8"/>
+      <path d="M4 10h16" stroke="rgba(255,255,255,.55)" stroke-width="1.6"/>
+      <path d="M9 6v12" stroke="rgba(255,255,255,.4)" stroke-width="1.6"/>
+      <path d="M14 6v12" stroke="rgba(255,255,255,.4)" stroke-width="1.6"/>
+    `);
+    case "ruler": return common(`
+      <path d="M6 18l12-12" stroke="rgba(56,189,248,.95)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M8 16l-1-1M11 13l-1-1M14 10l-1-1M17 7l-1-1" stroke="rgba(255,255,255,.6)" stroke-width="1.6" stroke-linecap="round"/>
+    `);
+    case "convert": return common(`
+      <path d="M7 8h10" stroke="rgba(56,189,248,.9)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M14 5l3 3-3 3" stroke="rgba(56,189,248,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M17 16H7" stroke="rgba(34,197,94,.9)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M10 13l-3 3 3 3" stroke="rgba(34,197,94,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    `);
+    case "meters": return common(`
+      <path d="M6 19V5" stroke="rgba(255,255,255,.65)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M6 6h6M6 10h4M6 14h6M6 18h4" stroke="rgba(56,189,248,.9)" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M14 7h4v12h-4z" fill="rgba(34,197,94,.18)" stroke="rgba(34,197,94,.6)" stroke-width="1.6"/>
+    `);
+    case "perimeter": return common(`
+      <rect x="6" y="6" width="12" height="12" rx="3" stroke="rgba(56,189,248,.9)" stroke-width="2"/>
+      <path d="M6 6h12" stroke="rgba(34,197,94,.9)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M6 18h12" stroke="rgba(34,197,94,.9)" stroke-width="2" stroke-linecap="round"/>
+    `);
+    case "area": return common(`
+      <rect x="5.5" y="5.5" width="13" height="13" rx="3" stroke="rgba(245,158,11,.9)" stroke-width="2"/>
+      <path d="M10 6v12M14 6v12M6 10h12M6 14h12" stroke="rgba(255,255,255,.45)" stroke-width="1.4"/>
+    `);
+    case "capacity": return common(`
+      <path d="M8 7h8v11a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3V7Z" stroke="rgba(56,189,248,.9)" stroke-width="2"/>
+      <path d="M8 12h8" stroke="rgba(34,197,94,.9)" stroke-width="2" stroke-linecap="round"/>
+    `);
+    case "choose": return common(`
+      <path d="M7 7h10" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M7 12h10" stroke="rgba(56,189,248,.9)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M7 17h10" stroke="rgba(34,197,94,.85)" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="5" cy="12" r="1.7" fill="rgba(56,189,248,.9)"></circle>
+    `);
+    case "strategy": return common(`
+      <path d="M12 3v18" stroke="rgba(255,255,255,.3)" stroke-width="1.6"/>
+      <path d="M5 8h8" stroke="rgba(56,189,248,.95)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M5 12h10" stroke="rgba(34,197,94,.9)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M5 16h6" stroke="rgba(245,158,11,.9)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M15 5l4 4-4 4" stroke="rgba(255,255,255,.6)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    `);
+    default: return common(`<circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,.8)" stroke-width="2"/>`);
+  }
+}
+
+/* =========================
+   الصوت بدون ملفات خارجية
+   ========================= */
+let soundEnabled = true;
+function beep(type="good"){
+  if(!soundEnabled) return;
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = "sine";
+  const now = ctx.currentTime;
+  const seq = (type==="good") ? [523.25, 659.25, 783.99] : [220, 196];
+  g.gain.setValueAtTime(0.0001, now);
+  g.gain.exponentialRampToValueAtTime(0.18, now + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+  o.connect(g); g.connect(ctx.destination);
+  o.frequency.setValueAtTime(seq[0], now);
+  if(seq.length>1) o.frequency.setValueAtTime(seq[1], now + 0.12);
+  if(seq.length>2) o.frequency.setValueAtTime(seq[2], now + 0.24);
+  o.start(now); o.stop(now + 0.38);
+}
+
+/* =========================
+   منطق اللعبة + الفلاتر
+   ========================= */
+const $ = (id)=>document.getElementById(id);
+
+const screens = { start: $("screenStart"), quiz: $("screenQuiz"), result: $("screenResult") };
+
+const metaProgress = $("metaProgress");
+const metaScore = $("metaScore");
+const metaDiff = $("metaDiff");
+
+const qUnit = $("qUnit");
+const qLesson = $("qLesson");
+const qDifficulty = $("qDifficulty");
+const qText = $("qText");
+const qHint = $("qHint");
+const qIcon = $("qIcon");
+const choicesEl = $("choices");
+const feedback = $("feedback");
+const bar = $("bar");
+const topicBadge = $("topicBadge");
+const filterBadge = $("filterBadge");
+
+const stCorrect = $("stCorrect");
+const stWrong = $("stWrong");
+const stLeft = $("stLeft");
+
+const btnStart = $("btnStart");
+const btnNext = $("btnNext");
+const btnSkip = $("btnSkip");
+const btnRestart = $("btnRestart");
+const btnReview = $("btnReview");
+const reviewBox = $("reviewBox");
+const finalText = $("finalText");
+
+const btnToggleSound = $("btnToggleSound");
+const soundState = $("soundState");
+
+const unitSelect = $("unitSelect");
+const lessonSelect = $("lessonSelect");
+const filterNote = $("filterNote");
+
+let order = [];
+let idx = 0;
+let score = 0;
+let correct = 0;
+let wrong = 0;
+let answered = false;
+let wrongLog = [];
+
+let selectedUnit = "";
+let selectedLesson = "";
+
+function showScreen(name){
+  Object.values(screens).forEach(s=>s.classList.remove("active"));
+  screens[name].classList.add("active");
+}
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function renderDifficultyTag(diff){
+  qDifficulty.style.borderColor = "rgba(255,255,255,.12)";
+  qDifficulty.style.background = "rgba(56,189,248,.12)";
+  if(diff === "سهل"){
+    qDifficulty.style.background = "rgba(34,197,94,.14)";
+    qDifficulty.style.borderColor = "rgba(34,197,94,.25)";
+  }else if(diff === "متوسط"){
+    qDifficulty.style.background = "rgba(56,189,248,.14)";
+    qDifficulty.style.borderColor = "rgba(56,189,248,.25)";
+  }else if(diff === "صعب"){
+    qDifficulty.style.background = "rgba(245,158,11,.16)";
+    qDifficulty.style.borderColor = "rgba(245,158,11,.28)";
+  }else if(diff === "تفكير"){
+    qDifficulty.style.background = "rgba(239,68,68,.14)";
+    qDifficulty.style.borderColor = "rgba(239,68,68,.25)";
+  }
+}
+
+function updateHUD(){
+  const total = order.length || 1;
+  metaProgress.textContent = `${toArabicDigits(Math.min(idx+1, total))}/${toArabicDigits(total)}`;
+  metaScore.textContent = toArabicDigits(score);
+  metaDiff.textContent = answered ? qDifficulty.textContent : "—";
+  stCorrect.textContent = toArabicDigits(correct);
+  stWrong.textContent = toArabicDigits(wrong);
+  stLeft.textContent = toArabicDigits(Math.max(total - idx, 0));
+}
+
+function buildActiveQuestionOrder(){
+  let indices = QUESTIONS.map((_,i)=>i);
+
+  if(selectedUnit){
+    indices = indices.filter(i => QUESTIONS[i].unit === selectedUnit);
+  }
+  if(selectedUnit && selectedLesson){
+    indices = indices.filter(i => QUESTIONS[i].lesson === selectedLesson);
+  }
+
+  // لو ما فيه أسئلة للفلتر، نرجع للشامل
+  if(indices.length === 0){
+    indices = QUESTIONS.map((_,i)=>i);
+    selectedUnit = "";
+    selectedLesson = "";
+  }
+
+  order = shuffle(indices);
+}
+
+function resetGame(){
+  buildActiveQuestionOrder();
+  idx = 0;
+  score = 0;
+  correct = 0;
+  wrong = 0;
+  answered = false;
+  wrongLog = [];
+  updateHUD();
+}
+
+function renderQuestion(){
+  answered = false;
+  btnNext.disabled = true;
+  feedback.style.display = "none";
+  feedback.textContent = "";
+  feedback.classList.remove("pulse");
+
+  const q = QUESTIONS[order[idx]];
+  qUnit.textContent = `الوحدة: ${q.unit}`;
+  qLesson.textContent = `الدرس: ${q.lesson}`;
+  qDifficulty.textContent = `المستوى: ${q.diff}`;
+  renderDifficultyTag(q.diff);
+
+  qText.textContent = fmtText(q.q);
+  qHint.textContent = `💡 تلميح: ${fmtText(q.hint)}`;
+  qIcon.innerHTML = iconSVG(q.icon);
+
+  topicBadge.textContent = `المجال الحالي: ${q.unit}`;
+  bar.style.width = `${(idx/(order.length||1))*100}%`;
+
+  // شارة الفلتر
+  if(selectedUnit && selectedLesson){
+    filterBadge.textContent = `الفلتر: ${selectedUnit} ← ${selectedLesson}`;
+  }else if(selectedUnit && !selectedLesson){
+    filterBadge.textContent = `الفلتر: ${selectedUnit} (كل الدروس)`;
+  }else{
+    filterBadge.textContent = "الفلتر: اختبار شامل";
+  }
+
+  choicesEl.innerHTML = "";
+  const labels = ["أ","ب","ج","د"];
+
+  q.choices.forEach((c, i)=>{
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.type = "button";
+    btn.innerHTML = `
+      <span class="opt">
+        <span class="chip">${labels[i]}</span>
+        <span>${fmtText(c)}</span>
+      </span>
+      <span class="rightmark" aria-hidden="true">➜</span>
+    `;
+    btn.addEventListener("click", ()=> chooseAnswer(i, btn));
+    choicesEl.appendChild(btn);
+  });
+
+  updateHUD();
+}
+
+function lockChoices(){
+  [...choicesEl.querySelectorAll("button")].forEach(b=>b.disabled = true);
+}
+
+function chooseAnswer(choiceIndex, btnEl){
+  if(answered) return;
+  answered = true;
+
+  const q = QUESTIONS[order[idx]];
+  const isCorrect = choiceIndex === q.answer;
+
+  lockChoices();
+
+  const buttons = [...choicesEl.querySelectorAll("button")];
+  buttons[q.answer].classList.add("state-good");
+  if(!isCorrect) btnEl.classList.add("state-bad");
+
+  const stepsHtml = (q.steps && q.steps.length)
+    ? `<div style="margin-top:10px">
+         <div style="color:rgba(255,255,255,.92);font-weight:1000;margin-bottom:6px;">🧠 شرح الحل خطوة بخطوة:</div>
+         <ol style="margin:0;padding-right:18px;line-height:1.9;color:var(--muted)">
+           ${q.steps.map(s=>`<li>${fmtText(s)}</li>`).join("")}
+         </ol>
+       </div>` : "";
+
+  feedback.style.display = "block";
+  feedback.classList.add("pulse");
+
+  if(isCorrect){
+    score += 1;
+    correct += 1;
+    feedback.innerHTML = `✅ <strong>إجابة صحيحة!</strong><br>${fmtText(q.explain)}${stepsHtml}`;
+    beep("good");
+  }else{
+    wrong += 1;
+    const pickedText = q.choices[choiceIndex];
+    feedback.innerHTML = `❌ <strong>إجابة غير صحيحة.</strong><br>
+      اخترتِ: <strong>${fmtText(pickedText)}</strong><br>
+      الإجابة الصحيحة: <strong>${fmtText(q.choices[q.answer])}</strong><br>
+      ${fmtText(q.explain)}
+      ${stepsHtml}`;
+    beep("bad");
+
+    wrongLog.push({
+      unit:q.unit, lesson:q.lesson, q:q.q,
+      your:pickedText, right:q.choices[q.answer]
+    });
+  }
+
+  btnNext.disabled = false;
+  updateHUD();
+}
+
+function next(){
+  if(idx < order.length - 1){
+    idx++;
+    renderQuestion();
+  }else{
+    finish();
+  }
+}
+
+function skip(){
+  if(answered) return;
+  const q = QUESTIONS[order[idx]];
+  wrongLog.push({
+    unit:q.unit, lesson:q.lesson, q:q.q,
+    your:"تم تخطي السؤال",
+    right:q.choices[q.answer]
+  });
+  idx++;
+  if(idx >= order.length) finish();
+  else renderQuestion();
+  updateHUD();
+}
+
+function finish(){
+  bar.style.width = "100%";
+  showScreen("result");
+
+  const total = order.length || 1;
+  const percent = Math.round((score / total) * 100);
+
+  let msg = "";
+  if(percent >= 90) msg = "ممتاز جدًا! إتقان قوي 💎";
+  else if(percent >= 70) msg = "رائع! مستوى جميل جدًا 🌟";
+  else if(percent >= 50) msg = "جيد! تحتاجين تدريبًا بسيطًا 💪";
+  else msg = "بداية طيبة! أعيدي المحاولة وستتحسن نتيجتك 🚀";
+
+  finalText.textContent = `درجتك: ${toArabicDigits(score)} من ${toArabicDigits(total)} (${toArabicDigits(percent)}٪). ${msg}`;
+
+  reviewBox.style.display = "none";
+  reviewBox.innerHTML = "";
+  btnReview.textContent = "عرض ملخص الأخطاء 📌";
+}
+
+function toggleReview(){
+  if(reviewBox.style.display === "none"){
+    reviewBox.style.display = "block";
+    if(wrongLog.length === 0){
+      reviewBox.innerHTML = "🎉 لا توجد أخطاء! أحسنتِ جدًا.";
+    }else{
+      reviewBox.innerHTML = wrongLog.map((x, i)=>`
+        <div style="padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);margin-bottom:10px;">
+          <div style="color:rgba(255,255,255,.9);font-weight:1000;margin-bottom:6px;">${toArabicDigits(i+1)}) ${x.unit} — ${x.lesson}</div>
+          <div>${fmtText(x.q)}</div>
+          <div style="margin-top:6px;color:rgba(239,68,68,.95)">إجابتك: <b>${fmtText(x.your)}</b></div>
+          <div style="color:rgba(34,197,94,.95)">الصحيح: <b>${fmtText(x.right)}</b></div>
+        </div>
+      `).join("");
+    }
+    btnReview.textContent = "إخفاء الملخص ✨";
+  }else{
+    reviewBox.style.display = "none";
+    btnReview.textContent = "عرض ملخص الأخطاء 📌";
+  }
+}
+
+/* =========================
+   القوائم المنسدلة
+   ========================= */
+function initDropdowns(){
+  // الوحدات من الأسئلة (تطابق مضمون)
+  const units = [...new Set(QUESTIONS.map(q => q.unit))];
+
+  // تعبئة الوحدة
+  units.forEach(u=>{
+    const opt = document.createElement("option");
+    opt.value = u;
+    opt.textContent = u;
+    unitSelect.appendChild(opt);
+  });
+
+  unitSelect.addEventListener("change", ()=>{
+    selectedUnit = unitSelect.value;
+    selectedLesson = "";
+    lessonSelect.disabled = !selectedUnit;
+
+    // تفريغ الدروس وإعادة تعبئتها
+    lessonSelect.querySelectorAll("option:not(:first-child)").forEach(o=>o.remove());
+    lessonSelect.value = "";
+
+    if(!selectedUnit){
+      filterNote.textContent = "إذا لم تختاري درسًا سيتم تشغيل الاختبار الشامل.";
+      return;
+    }
+
+    // دروس الوحدة المختارة
+    const lessons = [...new Set(
+      QUESTIONS.filter(q => q.unit === selectedUnit).map(q => q.lesson)
+    )];
+
+    lessons.forEach(ls=>{
+      const opt = document.createElement("option");
+      opt.value = ls;
+      opt.textContent = ls;
+      lessonSelect.appendChild(opt);
+    });
+
+    filterNote.textContent = `تم اختيار الوحدة: ${selectedUnit}. الآن اختاري الدرس.`;
+  });
+
+  lessonSelect.addEventListener("change", ()=>{
+    selectedLesson = lessonSelect.value;
+    if(!selectedLesson){
+      filterNote.textContent = `تم اختيار الوحدة: ${selectedUnit}. (سيتم عرض كل دروس الوحدة إذا بدأتي الآن)`;
+      return;
+    }
+    filterNote.textContent = `جاهزة ✅ سيظهر اختبار الدرس: ${selectedLesson}`;
+  });
+}
+
+function startGame(){
+  resetGame();
+  showScreen("quiz");
+  renderQuestion();
+}
+
+/* =========================
+   أزرار
+   ========================= */
+btnStart.addEventListener("click", startGame);
+btnNext.addEventListener("click", next);
+btnSkip.addEventListener("click", skip);
+btnRestart.addEventListener("click", ()=> showScreen("start"));
+btnReview.addEventListener("click", toggleReview);
+
+btnToggleSound.addEventListener("click", ()=>{
+  soundEnabled = !soundEnabled;
+  soundState.textContent = soundEnabled ? "مفعل" : "مغلق";
+  btnToggleSound.classList.toggle("state-good", soundEnabled);
+  btnToggleSound.classList.toggle("state-bad", !soundEnabled);
+  if(soundEnabled) beep("good");
+});
+
+soundState.textContent = soundEnabled ? "مفعل" : "مغلق";
+initDropdowns();
+</script>
+</body>
+</html>
